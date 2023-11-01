@@ -17,9 +17,9 @@ type TagService interface {
 type TagListParams struct {
 }
 type Tag struct {
-	TagID int    `json:"tagId,omitempty"`
-	Name  string `json:"name,omitempty"`
-	Color string `json:"color,omitempty"`
+	TagID *int    `json:"tagId,omitempty"`
+	Name  *string `json:"name,omitempty"`
+	Color *string `json:"color,omitempty"`
 }
 
 func (s *TagServiceOp) List(params TagListParams) (*[]Tag, error) {
