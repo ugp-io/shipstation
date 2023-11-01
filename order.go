@@ -177,24 +177,29 @@ type ShipTo struct {
 	AddressVerified *string `json:"addressVerified,omitempty"`
 }
 type Items struct {
-	OrderItemID       *int      `json:"orderItemId,omitempty"`
-	LineItemKey       *string   `json:"lineItemKey,omitempty"`
-	Sku               *string   `json:"sku,omitempty"`
-	Name              *string   `json:"name,omitempty"`
-	ImageURL          *string   `json:"imageUrl,omitempty"`
-	Weight            *Weight   `json:"weight,omitempty"`
-	Quantity          *int      `json:"quantity,omitempty"`
-	UnitPrice         *float64  `json:"unitPrice,omitempty"`
-	TaxAmount         *float64  `json:"taxAmount,omitempty"`
-	ShippingAmount    *float64  `json:"shippingAmount,omitempty"`
-	WarehouseLocation *string   `json:"warehouseLocation,omitempty"`
-	Options           *[]string `json:"options,omitempty"`
-	ProductID         *int      `json:"productId,omitempty"`
-	FulfillmentSku    *string   `json:"fulfillmentSku,omitempty"`
-	Adjustment        *bool     `json:"adjustment,omitempty"`
-	Upc               *string   `json:"upc,omitempty"`
-	CreateDate        *string   `json:"createDate,omitempty"`
-	ModifyDate        *string   `json:"modifyDate,omitempty"`
+	OrderItemID       *int          `json:"orderItemId,omitempty"`
+	LineItemKey       *string       `json:"lineItemKey,omitempty"`
+	Sku               *string       `json:"sku,omitempty"`
+	Name              *string       `json:"name,omitempty"`
+	ImageURL          *string       `json:"imageUrl,omitempty"`
+	Weight            *Weight       `json:"weight,omitempty"`
+	Quantity          *int          `json:"quantity,omitempty"`
+	UnitPrice         *float64      `json:"unitPrice,omitempty"`
+	TaxAmount         *float64      `json:"taxAmount,omitempty"`
+	ShippingAmount    *float64      `json:"shippingAmount,omitempty"`
+	WarehouseLocation *string       `json:"warehouseLocation,omitempty"`
+	Options           *[]ItemOption `json:"options,omitempty"`
+	ProductID         *int          `json:"productId,omitempty"`
+	FulfillmentSku    *string       `json:"fulfillmentSku,omitempty"`
+	Adjustment        *bool         `json:"adjustment,omitempty"`
+	Upc               *string       `json:"upc,omitempty"`
+	CreateDate        *string       `json:"createDate,omitempty"`
+	ModifyDate        *string       `json:"modifyDate,omitempty"`
+}
+
+type ItemOption struct {
+	Name  *string `json:"name,omitempty"`
+	Value *string `json:"value,omitempty"`
 }
 type Weight struct {
 	Value       *float64 `json:"value,omitempty"`
