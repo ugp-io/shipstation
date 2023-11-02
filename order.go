@@ -16,6 +16,7 @@ type OrderService interface {
 	List(OrderListParams) (*OrdersResource, error)
 	ListByTag(OrderListByTagParams) (*OrdersResource, error)
 	Get(OrderGetParams) (*Order, error)
+	CreateUpdate(Order) (*Order, error)
 	CreateLabel(OrderCreateLabelParams) (*OrderCreateLabelResource, error)
 	AddTag(OrderAddTagParams) (*OrderAddTagResource, error)
 	RemoveTag(OrderRemoveTagParams) (*OrderRemoveTagResource, error)
@@ -252,6 +253,13 @@ type Dimensions struct {
 	Units  *string  `json:"units,omitempty"`
 }
 
+type OrderCreateUpdateParams struct {
+	OrderKey    *string `json:"orderKey,omitempty"`
+	CarrierCode *string `json:"carrierCode,omitempty"`
+	ServiceCode *string `json:"serviceCode,omitempty"`
+	Weight      *Weight `json:"weight,omitempty"`
+}
+
 func (s *OrderServiceOp) List(params OrderListParams) (*OrdersResource, error) {
 
 	// URI
@@ -377,6 +385,23 @@ func (s *OrderServiceOp) CreateLabel(params OrderCreateLabelParams) (*OrderCreat
 	url := uri + "/createlabelfororder"
 
 	var resp OrderCreateLabelResource
+
+	errRequest := s.client.Request("POST", url, params, &resp)
+	if errRequest != nil {
+		return nil, errRequest
+	}
+
+	return &resp, nil
+}
+
+func (s *OrderServiceOp) CreateUpdate(params Order) (*Order, error) {
+
+	// URI
+	uri := fmt.Sprintf("%s/%s", apiURI, ordersBasePath)
+
+	url := uri + "/createorder"
+
+	var resp Order
 
 	errRequest := s.client.Request("POST", url, params, &resp)
 	if errRequest != nil {
