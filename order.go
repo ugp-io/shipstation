@@ -137,7 +137,7 @@ type Order struct {
 	ShipDate                  *string               `json:"shipDate,omitempty"`
 	HoldUntilDate             *string               `json:"holdUntilDate,omitempty"`
 	Weight                    *Weight               `json:"weight,omitempty"`
-	Dimensions                *string               `json:"dimensions,omitempty"`
+	Dimensions                *Dimensions           `json:"dimensions,omitempty"`
 	InsuranceOptions          *InsuranceOptions     `json:"insuranceOptions,omitempty"`
 	InternationalOptions      *InternationalOptions `json:"internationalOptions,omitempty"`
 	AdvancedOptions           *AdvancedOptions      `json:"advancedOptions,omitempty"`
