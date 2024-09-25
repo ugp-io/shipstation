@@ -14,11 +14,17 @@ type StoreServiceOp struct {
 
 type StoreService interface {
 	List(StoreListParams) (*[]Store, error)
+	Refresh(params RefreshStoreParams) (bool, error)
 }
 
 type StoreListParams struct {
 	ShowInactive  *bool
 	MarketplaceID *int
+}
+
+type RefreshStoreParams struct {
+	StoreId     *string `json:"storeId,omitempty"`
+	RefreshDate *string `json:"refreshDate,omitempty"`
 }
 
 type Store struct {
@@ -64,4 +70,28 @@ func (s *StoreServiceOp) List(params StoreListParams) (*[]Store, error) {
 	}
 
 	return &resp, nil
+}
+
+func (s *StoreServiceOp) Refresh(params RefreshStoreParams) (bool, error) {
+
+	// URI
+	uri := fmt.Sprintf("%s/%s/%s", apiURI, storesBasePath, "refreshstore")
+
+	values := url.Values{}
+	if params.StoreId != nil {
+		values.Add("storeId", *params.StoreId)
+	}
+	if params.RefreshDate != nil {
+		values.Add("refreshDate", *params.RefreshDate)
+	}
+
+	url := uri + "?" + values.Encode()
+
+	var resp DefaultResponse
+	errRequest := s.client.Request("POST", url, nil, &resp)
+	if errRequest != nil {
+		return false, errRequest
+	}
+
+	return resp.Success, nil
 }

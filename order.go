@@ -20,6 +20,7 @@ type OrderService interface {
 	CreateLabel(OrderCreateLabelParams) (*OrderCreateLabelResource, error)
 	AddTag(OrderAddTagParams) (*OrderAddTagResource, error)
 	RemoveTag(OrderRemoveTagParams) (*OrderRemoveTagResource, error)
+	MarkOrderShipped(params MarkOrderShippedParams) (*Order, error)
 }
 
 type OrderGetParams struct {
@@ -86,6 +87,15 @@ type OrderRemoveTagParams struct {
 type OrderRemoveTagResource struct {
 	Success bool   `json:"success"`
 	Message string `json:"message"`
+}
+
+type MarkOrderShippedParams struct {
+	OrderId            int     `json:"orderId,omitempty"`
+	CarrierCode        string  `json:"carrierCode,omitempty"`
+	ShipDate           *string `json:"shipDate,omitempty"`
+	TrackingNumber     *string `json:"trackingNumber,omitempty"`
+	NotifyCustomer     *bool   `json:"notifyCustomer,omitempty"`
+	NotifySalesChannel *bool   `json:"notifySalesChannel,omitempty"`
 }
 
 type OrderCreateLabelResource struct {
@@ -437,6 +447,22 @@ func (s *OrderServiceOp) RemoveTag(params OrderRemoveTagParams) (*OrderRemoveTag
 
 	var resp OrderRemoveTagResource
 
+	errRequest := s.client.Request("POST", url, params, &resp)
+	if errRequest != nil {
+		return nil, errRequest
+	}
+
+	return &resp, nil
+}
+
+func (s *OrderServiceOp) MarkOrderShipped(params MarkOrderShippedParams) (*Order, error) {
+
+	// URI
+	uri := fmt.Sprintf("%s/%s", apiURI, ordersBasePath)
+
+	url := uri + "/markasshipped"
+
+	var resp Order
 	errRequest := s.client.Request("POST", url, params, &resp)
 	if errRequest != nil {
 		return nil, errRequest

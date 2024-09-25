@@ -18,6 +18,11 @@ type Client struct {
 	Tag       TagService
 }
 
+type DefaultResponse struct {
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+}
+
 func NewClient(apiKey, apiSecret string) *Client {
 
 	c := &Client{
