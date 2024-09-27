@@ -7,6 +7,7 @@ import (
 )
 
 const shipmentsBasePath = "shipments"
+const carriersBasePath = "carriers"
 
 type ShipmentServiceOp struct {
 	client *Client
@@ -15,6 +16,7 @@ type ShipmentServiceOp struct {
 type ShipmentService interface {
 	List(ShipmentListParams) (*ShipmentsResource, error)
 	VoidLabel(ShipmentVoidLabelParams) (*ShipmentVoidLabelResource, error)
+	ListCarriers() (*[]Carrier, error)
 }
 
 type ShipmentListParams struct {
@@ -189,6 +191,32 @@ func (s *ShipmentServiceOp) VoidLabel(params ShipmentVoidLabelParams) (*Shipment
 	var resp ShipmentVoidLabelResource
 
 	errRequest := s.client.Request("POST", url, params, &resp)
+	if errRequest != nil {
+		return nil, errRequest
+	}
+
+	return &resp, nil
+}
+
+type Carrier struct {
+	Name                  string  `json:"name"`
+	Code                  string  `json:"code"`
+	AccountNumber         string  `json:"accountNumber"`
+	RequiresFundedAccount bool    `json:"requiresFundedAccount"`
+	Balance               float64 `json:"balance"`
+	Nickname              string  `json:"nickname"`
+	ShippingProviderId    int     `json:"shippingProviderId"`
+	Primary               bool    `json:"primary"`
+}
+
+func (s *ShipmentServiceOp) ListCarriers() (*[]Carrier, error) {
+
+	// URI
+	url := fmt.Sprintf("%s/%s", apiURI, carriersBasePath)
+
+	var resp []Carrier
+
+	errRequest := s.client.Request("GET", url, nil, &resp)
 	if errRequest != nil {
 		return nil, errRequest
 	}
